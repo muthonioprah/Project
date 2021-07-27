@@ -23,10 +23,6 @@ AT_API_KEY is africastalking api key
 
 4. Use alembic to create tables by running the following in your terminal
 ```
-$ alembic init alembic
-
-$ alembic revision --autogenerate -m "create tables"
-
 $ alembic upgrade head
 
 ```

@@ -1,0 +1,181 @@
+{% extends 'base2.html' %}
+
+{% block pageTitle %}
+    Biashara
+{% endblock pageTitle %}
+
+
+{% block css %}
+    <!-- data table -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css">
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Add new bishara
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Fill in the details below to create a biashara</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="post" enctype=multipart/form-data>
+                                <div class="form-group">
+                                    <label for="">Thumbnail</label>
+                                    <input type=file name=file class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Business Name <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business name eg Wa-Kamau Tailors"></i></label>
+                                    <input type="text" name="business_name" id="name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Business Description <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="describe the nature of the business"></i></label>
+                                    <textarea name="description" id="description" cols="45" rows="10" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Contact Email <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business contact email"></i></label>
+                                    <input type="email" name="contact_email" id="name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Contact Number <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business contact number"></i></label>
+                                    <input type="text" name="contact_number" id="name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-sm btn-success">submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- alert -->
+        {% include '/includes/alert.html' %}
+
+        <div class="row mt-3">
+            <div class="col">
+                <table  id="gman" class="table table-sm">
+                    <thead class="table-secondary ">
+                      <tr>
+                        <th scope="col">#</th>
+                        <!-- <th scope="col">Thumbnail</th> -->
+                        <th scope="col">Business Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Contact Email</th>
+                        <th>Contact Number</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Manage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for each in biz %}
+                      <tr>
+                        <th scope="row">{{ each.id }}</th>
+                        <!-- <td><img src="{{ each.thumbnail }}" alt=""></td> -->
+                        <td>{{ each.name }}</td>
+                        <td>{{ each.description }}</td>
+                        <td>{{ each.contact_email }}</td>
+                        <td>{{ each.contact_number }}</td>
+                        <td>
+                            <!-- Edit details Button trigger modal -->
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ each.id }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="editModal{{ each.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit {{ each.name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('update_biashara', id=each.id) }}" method="post" >
+                                            
+                                            <div class="form-group">
+                                                <label for="name">Business Name <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business name eg Wa-Kamau Tailors"></i></label>
+                                                <input type="text" value="{{ each.name }}" name="business_name" id="name" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Business Description <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="describe the nature of the business"></i></label>
+                                                <textarea name="description" id="description" cols="45" rows="10" required>{{ each.description }}</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name">Contact Email <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business contact email"></i></label>
+                                                <input type="email" value="{{ each.contact_email }}" name="contact_email" id="name" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name">Contact Number <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business contact number"></i></label>
+                                                <input type="text" value="{{ each.contact_number }}" name="contact_number" id="name" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-sm btn-success mt-3">submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="text-info mt-2" href="{{ url_for('biashara_id', id=each.id) }}"><i class="fas fa-cog"></i>manage</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+
+{% block script %}
+    
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#gman').DataTable( {
+            //dom: 'Bfrtip',
+                /*buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]*/
+        } );
+    } );
+</script>
+
+
+
+{% endblock script %}

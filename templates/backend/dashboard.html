@@ -1,0 +1,105 @@
+{% extends 'base2.html' %}
+
+{% block pageTitle %}
+    Dashboard
+{% endblock pageTitle %}
+
+{% block content %}
+  <!-- alert -->
+  {% include '/includes/alert.html' %}
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-4 col-sm-12 d-flex justify-content-center " >
+                <div class="card border-dark text-white bg-success  mb-3" style="width: 100%;">
+                    <div class="card-header">Biashara</div>
+                    <div class="card-body">
+                      <p class="card-text">{{ biz }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-4 col-sm-12 d-flex justify-content-center " >
+                <div class="card border-dark text-white bg-warning  mb-3" style="width: 100%;">
+                    <div class="card-header">Time</div>
+                    <div class="card-body text-center">
+                      <div id="clock" >
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center " >
+                <div class="card border-dark text-white bg-info  mb-3" style="width: 100%;">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                      <p class="card-text"></p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <canvas id="bar-chart" width="450" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+
+<!-- chart js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<script>
+    // Bar chart
+    new Chart(document.getElementById("bar-chart"), {
+      type: 'bar',
+      data: {
+        labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+        datasets: [
+          {
+            label: "Population (millions)",
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            data: [2478,5267,734,784,433]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Predicted world population (millions) in 2050'
+        }
+      }
+    });
+  </script>
+
+  <script>
+    function clock() {
+    let date = new Date();
+    let hrs = date.getHours();
+    let mins = date.getMinutes();
+    let secs = date.getSeconds();
+    let period = "AM";
+  
+    if (hrs == 0) hrs = 12;
+    if (hrs > 12) {
+      hrs = hrs - 12;
+      period = "PM";
+    }
+  
+    hrs = hrs < 10 ? `0${hrs}` : hrs;
+    mins = mins < 10 ? `0${mins}` : mins;
+    secs = secs < 10 ? `0${secs}` : secs;
+  
+    let time = `${hrs}:${mins}:${secs} ${period}`;
+    setInterval(clock, 1000);
+    document.getElementById("clock").innerText = time;
+  }
+  
+  clock();
+
+</script>
+    
+{% endblock script %}

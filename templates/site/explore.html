@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore | TextDump</title>
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+    <!-- import bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css')  }}">
+
+</head>
+<body>
+    
+    {% include "/includes/navbar.html" %}
+
+    <div class="container">
+
+        <div class="row mt-4">
+            <div class="col">
+                <h1 class="text-center">Find Textile Waste</h1>
+            </div>
+        </div>
+
+        <!-- alert -->
+        {% include '/includes/alert.html' %}
+
+        <div class="row mt-4">
+            {% for each in items %}
+                <div class="col-lg-4 mb-5">
+                    <div class="card" style="width: 23rem;height:100%;">
+                        <img style="max-height: 400px;" src="{{ each.biashara.thumbnail }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title text-info" >{{ each.title }}</h5>
+                            <span class="text-warning"><i>by: {{ each.biashara.name }}</i></span>
+                            <p class="card-text text-dark mt-3">{{ each.brief_description }}</p>
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{ each.id }}">
+                                Book now
+                            </button>
+                                
+                        </div>
+    
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ each.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">{{ each.title }} Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h4 class="text-dark text-center">More details</h4>
+                                    <div>
+                                        <p class="text-dark">
+                                            {{ each.details }}
+                                        </p>
+                                        <p class="text-danger">
+                                            Contact Email: {{each.biashara.contact_email}}
+                                        </p>
+                                        <p class="text-danger">
+                                            Contact Phone: {{each.biashara.contact_number}}
+                                        </p>
+                                    </div>
+
+                                    <h4 class="text-dark text-center">Book now</h4>
+
+                                    <form action="{{ url_for('book', id=each.id) }}" method="post">
+                                        <div class="form-group">
+                                            <label for="" class="text-dark">Email</label>
+                                            <input type="text" name="email" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="text-dark">Phone (Must be in format 254XXXXX)</label>
+                                            <input type="text" name="phone" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="text-dark">Full Name</label>
+                                            <input type="text" name="fullname" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" value="{{ each.biashara.name }}" name="biashara">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" value="{{ each.title }}" name="item">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" value="{{each.biashara.contact_number}}" name="contact_number">
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-sm btn-success mt-2">submit</button>
+                                        </div>
+                                    </form>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+</body>
+</html>

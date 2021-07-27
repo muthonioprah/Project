@@ -1,0 +1,234 @@
+{% extends 'base2.html' %}
+
+{% block pageTitle %}
+    Manage Biashara
+{% endblock pageTitle %}
+
+{% block css %}
+    <!-- data table -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css">
+
+{% endblock css %}
+
+{% block content %}
+<h3 class="d-flex justify-content-center text-info">You are now managing <span class="text-secondary"> {{ bizname }}</span></h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add disposable Items
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add disposable items</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <label for="">title</label>
+                                <input type="text" name="title" class="form-control" id="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Brief description</label>
+                                <input type="text" name="brief_description" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Details <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="describe the nature of the business"></i></label>
+                                <textarea name="details" id="details" cols="45" rows="10" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-success">submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alert -->
+    {% include '/includes/alert.html' %}
+
+    <div class="row mt-3">
+        <div class="col">
+            <table id="biz" class="table table-sm">
+                <thead class="table-secondary ">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Brief Description</th>
+                    <th scope="col">Published</th>
+                    <th scope="col">Unpublish</th>
+                    <th scope="col">Edit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for each in disposables %}
+                  <tr>
+                    <th scope="row">{{ each.id }}</th>
+                    <td scope="row">{{ each.title }}</td>
+                    <td scope="row">{{ each.brief_description }}</td>
+                    {% if each.is_published %}
+                    <td class="text-success" scope="row">{{ each.is_published }}</td>  
+                    {% else %}
+                    <td class="text-danger" scope="row">{{ each.is_published }}</td>
+                    {% endif %}
+                    <td scope="row">
+
+
+                        <!-- Button trigger modal -->
+                        {% if each.is_published %}
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#unpublish{{ each.id }}">
+                                Unpublish Item
+                            </button>
+
+                                <!-- Modal -->
+                            <div class="modal fade" id="unpublish{{ each.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    
+                                        <p>Are you sure you want to unpublish {{ each.title }} ?</p>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                    <form action="{{ url_for('unpublish',biashara_id=biz_id, id=each.id) }}" method="post">
+                                        <button type="submit" class="btn btn-sm btn-success">Yes</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% else %}
+
+                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#unpublish{{ each.id }}">
+                            publish Item
+                        </button>
+
+                            <!-- Modal -->
+                        <div class="modal fade" id="unpublish{{ each.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                
+                                    <p>Are you sure you want to publish {{ each.title }} ?</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                <form action="{{ url_for('unpublish',biashara_id=biz_id, id=each.id) }}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-success">Yes</button>
+                                </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                            
+                        {% endif %}
+                        
+                        
+                        
+
+                    </td>
+                    <td scope="row">
+                        <!-- Edit details Button trigger modal -->
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit record</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                    <form action="{{ url_for('update_disposable',biashara_id=biz_id, id=each.id) }}" method="post">
+                                        <div class="form-group">
+                                            <label for="">title</label>
+                                            <input type="text" value="{{ each.title }}" name="title" class="form-control" id="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Brief description</label>
+                                            <input type="text" value="{{ each.brief_description }}" name="brief_description" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Details <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="describe the nature of the business"></i></label>
+                                            <textarea name="details" id="details" cols="45" rows="10" required>{{ each.details }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-sm btn-success">submit</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+    
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#biz').DataTable( {
+            //dom: 'Bfrtip',
+                /*buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]*/
+        } );
+    } );
+</script>
+
+
+{% endblock script %}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | TextDump</title>
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+    <!-- import bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css')  }}">
+
+</head>
+<body>
+    
+    {% include "/includes/navbar.html" %}
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col p-5" style="height: 200px !important;">
+                <div class="header ">
+                    <h1  style="font-weight: 900;">Textile recycling</h1>
+                    <p >A platform to share used textiles and footwear for re-use and recycling</p>
+
+                    <a class="btn btn-explore text-white mt-5" href="{{ url_for('explore') }}">Explore</a>
+                </div>
+            </div>
+            <div class="col p-5">
+                <img src="/static/images/site/undraw_design_community_rcft.svg" alt="">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col p-5">
+
+                <div class="mission">
+                    <h2 style="font-size: 2.5rem;color:#fcbf49;" class="d-flex justify-content-center mb-5">Our Mission</h2>
+                    <p style="line-height: 2rem;font-size:20px;" class="text-center">The current total amount of textiles discarded by the public and other parties (traders, tailors, etc) 
+                        in urban Kenya is estimated at 35 million kg yearly (of which 20 million kg is in Nairobi. 
+                        Within the next 10 years we aim to collect and recycle more than half of Kenya’s lost textiles.</p>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</body>
+</html>

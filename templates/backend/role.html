@@ -1,0 +1,122 @@
+{% extends 'base2.html' %}
+
+{% block pageTitle %}
+    Role
+{% endblock pageTitle %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Add new role
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">New Role</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('role') }}" method="post">
+                                <div class="form-group">
+                                    <label for="name">Role Name <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business name eg Wa-Kamau Tailors"></i></label>
+                                    <input type="text" name="name" id="name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="describe the nature of the business"></i></label>
+                                    <textarea name="description" id="description" cols="45" rows="10" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-sm btn-success">submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- alert -->
+        {% include '/includes/alert.html' %}
+
+        <div class="row mt-3">
+            <div class="col">
+                <table class="table table-sm">
+                    <thead class="table-secondary ">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Role Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Manage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for role in roles %}
+                        
+                      <tr>
+                        <th scope="row">{{ role.id }}</th>
+                        <td>{{ role.role }}</td>
+                        <td>{{ role.description }}</td>
+                        <td>
+                            <!-- Edit details Button trigger modal -->
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ role.id }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="editModal{{ role.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit record</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" method="post">
+                                            <div class="form-group">
+                                                <label for="name">Role Name <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Provide a business name eg Wa-Kamau Tailors"></i></label>
+                                                <input type="text" name="name" value="{{role.role}}" id="name" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Description <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="describe the nature of the business"></i></label>
+                                                <textarea name="description" id="description" class="form-control" required>
+                                                    {{role.description}}
+                                                </textarea>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <button type="submit" class="btn btn-sm btn-success">submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="text-info mt-2" href="#"><i class="fas fa-cog"></i>manage</a>
+                        </td>
+                      </tr>
+                      
+                      {% endfor %}
+                    
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

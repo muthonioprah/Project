@@ -3,7 +3,9 @@ waste recycling system prototype
 
 ### To get started
 1.create a virtual env
+
 2.pip install -r requirements.txt
+
 3.create a .env file with the following variables. 
 ```
 FLASK_APP=main.py
